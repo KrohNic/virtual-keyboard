@@ -1,0 +1,75 @@
+body {
+    background-color: rgb(219, 204, 170);
+}
+
+#wrapper {
+    margin: 0 auto;
+    width: 1000px;
+}
+
+textarea {
+    margin: 10px auto;
+    width: 1000px;
+    height: 200px;
+    resize: none;
+    font-size: 20px;
+}
+
+button, .letter {
+    width: 50px;
+    height: 60px;
+    color: black;
+    font-size: 27px;
+    background-color: rgb(223, 223, 223);
+    border: #bbbbbb solid 1px;
+    border-radius: 10px;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+    outline: none;
+    transition: .3s;
+}
+
+button:hover {
+    box-shadow: 0px 5px 7px -5px rgba(0,0,0,0.75);
+}
+
+button:active, .active {
+    box-shadow: inset 0px 0px 13px 0px rgba(0,0,0,0.75) !important;
+    transition: .2s;
+}
+
+.functional {
+    background-color: sienna;
+}
+
+.key-row {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+
+.keyboard {
+    margin: 0 auto;;
+    width: 1000px;
+    height: 320px;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+}
+
+.backspace {width: 170px;}
+
+.tab {width: 135px;}
+
+.enter {width: 156px;}
+
+.space {width: 400px;}
+
+.shiftleft, .shiftright {width: 170px;}
+
+.controlleft, .controlright {width: 164px;}
+
+.altleft, .altright {width: 113px;}
+
+.capslock {width: 153px;}
