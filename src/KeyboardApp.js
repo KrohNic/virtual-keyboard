@@ -34,6 +34,8 @@ export default class KeyboardApp {
     for (let i = 0; i < this.board.symbols.length; i += 1) {
       this.createKeysRow(this.board.symbols[i], keyboard);
     }
+
+    this.board.initKeySets();
   }
 
   setHandlers() {

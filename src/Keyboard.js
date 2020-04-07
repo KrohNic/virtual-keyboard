@@ -74,50 +74,55 @@ export default class Keyboard {
     this.isEngLang = true;
     this.isUpperCase = true;
     this.isShiftPressed = false;
+
+    this.buttonsEn = null;
+    this.mixedKeys = null;
+    this.buttonsRu = null;
+  }
+
+  initKeySets() {
+    this.buttonsEn = Array.from(document.querySelectorAll('.letter'));
+    this.mixedKeys = Array.from(document.querySelectorAll('.mixed'));
+    this.buttonsSymbolRu = Array.from(document.querySelectorAll('.symbol'));
+
+    this.buttonsSymbolEn = this.buttonsSymbolRu.concat(this.mixedKeys);
+    this.buttonsRu = this.buttonsEn.concat(this.mixedKeys);
   }
 
   changeLang() {
     this.isEngLang = !this.isEngLang;
     window.localStorage.setItem('lang', this.isEngLang);
 
-    const letters = Array.prototype.slice.call(
-      document.getElementsByClassName('letter'),
-      0,
-    );
-    const mixedKeys = Array.prototype.slice.call(
-      document.getElementsByClassName('mixed'),
-      0,
-    );
-    const buttons = letters.concat(mixedKeys);
+    this.buttonsRu.forEach((button) => {
+      const btn = button;
+      btn.textContent = this.getSymbolToSwitch(button.id);
+    });
+  }
 
-    for (let i = 0; i < buttons.length; i += 1) {
-      buttons[i].innerText = this.getSymbolToSwitch(buttons[i].id);
-    }
+  static toLowerCase(text) {
+    return text.toLowerCase();
+  }
+
+  static toUpperCase(text) {
+    return text.toUpperCase();
   }
 
   toggleCase() {
+    let buttonsToChange;
+    let textCaseFn;
+
     this.isUpperCase = !this.isUpperCase;
-    let buttons = Array.prototype.slice.call(
-      document.getElementsByClassName('letter'),
-      0,
-    );
 
-    if (!this.isEngLang) {
-      const mixedKeys = Array.prototype.slice.call(
-        document.getElementsByClassName('mixed'),
-        0,
+    if (this.isEngLang) buttonsToChange = this.buttonsEn;
+    else buttonsToChange = this.buttonsRu;
+
+    if (this.isUpperCase) textCaseFn = Keyboard.toLowerCase;
+    else textCaseFn = Keyboard.toUpperCase;
+
+    for (let i = 0; i < buttonsToChange.length; i += 1) {
+      buttonsToChange[i].textContent = textCaseFn(
+        buttonsToChange[i].textContent,
       );
-      buttons = buttons.concat(mixedKeys);
-    }
-
-    if (this.isUpperCase) {
-      for (let i = 0; i < buttons.length; i += 1) {
-        buttons[i].innerText = buttons[i].innerText.toLowerCase();
-      }
-    } else {
-      for (let i = 0; i < buttons.length; i += 1) {
-        buttons[i].innerText = buttons[i].innerText.toUpperCase();
-      }
     }
   }
 
@@ -153,23 +158,17 @@ export default class Keyboard {
   }
 
   shiftSymbols() {
+    let buttonsToChange;
+
+    if (this.isEngLang) buttonsToChange = this.buttonsSymbolEn;
+    else buttonsToChange = this.buttonsSymbolRu;
+
     this.isShiftPressed = !this.isShiftPressed;
 
-    let buttons = Array.prototype.slice.call(
-      document.getElementsByClassName('symbol'),
-      0,
-    );
-
-    if (this.isEngLang) {
-      const mixedKeys = Array.prototype.slice.call(
-        document.getElementsByClassName('mixed'),
-        0,
+    for (let i = 0; i < buttonsToChange.length; i += 1) {
+      buttonsToChange[i].textContent = this.getSymbolToSwitch(
+        buttonsToChange[i].id,
       );
-      buttons = buttons.concat(mixedKeys);
-    }
-
-    for (let i = 0; i < buttons.length; i += 1) {
-      buttons[i].innerText = this.getSymbolToSwitch(buttons[i].id);
     }
   }
 
@@ -197,7 +196,7 @@ export default class Keyboard {
     } else if (e.code.includes('Backspace')) {
       area.value = area.value.slice(0, -1);
     } else if (!button.classList.contains('functional')) {
-      area.value += button.innerText;
+      area.value += button.textContent;
     }
   }
 
@@ -221,7 +220,5 @@ export default class Keyboard {
     }
   }
 }
-
-// TODO: extract func from Array.prototype.slice.call(...)
 
 // TODO: line 195 remake to switch()
