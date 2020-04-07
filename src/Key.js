@@ -1,9 +1,8 @@
-import Keyboard from './Keyboard.js';
-
 export default class Key {
-  constructor(value, keyCode) {
-    this.keyCode = keyCode;
+  constructor(keyboardInst, value, keyCode) {
+    this.keyboardInst = keyboardInst;
     this.value = value;
+    this.keyCode = keyCode;
     // in ru_lang they are letters, but in en_lang - symbols
     this.mixedKeys = [
       'Backquote',
@@ -81,13 +80,13 @@ export default class Key {
         ShiftRight.classList.remove('active');
         AltLeft.classList.remove('active');
         AltRight.classList.remove('active');
-        new Keyboard().changeLang();
+        this.keyboardInst.changeLang();
       } else {
-        new Keyboard().toggleCase();
-        new Keyboard().shiftSymbols();
+        this.keyboardInst.toggleCase();
+        this.keyboardInst.shiftSymbols();
       }
     } else if (this.id === 'CapsLock') {
-      new Keyboard().toggleCase();
+      this.keyboardInst.toggleCase();
     } else if (this.id === 'AltLeft' || this.id === 'AltRight') {
       AltLeft.classList.toggle('active');
       AltRight.classList.toggle('active');
@@ -97,7 +96,7 @@ export default class Key {
         ShiftRight.classList.remove('active');
         AltLeft.classList.remove('active');
         AltRight.classList.remove('active');
-        new Keyboard().changeLang();
+        this.keyboardInst.changeLang();
       }
     } else {
       repeatKey((text) => {

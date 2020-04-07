@@ -1,9 +1,5 @@
 export default class Keyboard {
   constructor() {
-    if (Keyboard.instance) {
-      return Keyboard.instance;
-    }
-
     this.symbols = [
       [
         ['`~ёЁ', 'Backquote'],
@@ -78,9 +74,6 @@ export default class Keyboard {
     this.isEngLang = true;
     this.isUpperCase = true;
     this.isShiftPressed = false;
-
-    Keyboard.instance = this;
-    return Keyboard.instance;
   }
 
   changeLang() {
@@ -228,3 +221,7 @@ export default class Keyboard {
     }
   }
 }
+
+// TODO: extract func from Array.prototype.slice.call(...)
+
+// TODO: line 195 remake to switch()
