@@ -184,19 +184,29 @@ export default class Keyboard {
 
     e.preventDefault();
 
-    if (e.code.includes('Shift')) {
-      this.toggleCase();
-      this.shiftSymbols();
-    } else if (e.code.includes('Space')) {
-      area.value += ' ';
-    } else if (e.code.includes('Tab')) {
-      area.value += '    ';
-    } else if (e.code.includes('Enter')) {
-      area.value += '\n';
-    } else if (e.code.includes('Backspace')) {
-      area.value = area.value.slice(0, -1);
-    } else if (!button.classList.contains('functional')) {
-      area.value += button.textContent;
+    switch (e.code) {
+      case 'ShiftLeft':
+      case 'ShiftRight':
+        this.toggleCase();
+        this.shiftSymbols();
+        break;
+      case 'Space':
+        area.value += ' ';
+        break;
+      case 'Tab':
+        area.value += '    ';
+        break;
+      case 'Enter':
+        area.value += '\n';
+        break;
+      case 'Backspace':
+        area.value = area.value.slice(0, -1);
+        break;
+      default:
+        if (!button.classList.contains('functional')) {
+          area.value += button.textContent;
+        }
+        break;
     }
   }
 
@@ -210,15 +220,20 @@ export default class Keyboard {
 
     e.preventDefault();
 
-    if (e.code.includes('Shift')) {
-      this.toggleCase();
-      this.shiftSymbols();
-    } else if (e.code.includes('Caps')) {
-      this.toggleCase();
-    } else if (e.code.includes('Alt') && e.shiftKey) {
-      this.changeLang();
+    switch (e.code) {
+      case 'ShiftLeft':
+      case 'ShiftRight':
+        this.toggleCase();
+        this.shiftSymbols();
+        break;
+      case 'CapsLock':
+        this.toggleCase();
+        break;
+      default:
+        if (e.code.includes('Alt') && e.shiftKey) {
+          this.changeLang();
+        }
+        break;
     }
   }
 }
-
-// TODO: line 195 remake to switch()
