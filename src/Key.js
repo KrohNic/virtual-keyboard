@@ -17,6 +17,7 @@ export default class Key {
 
   appendTo(fragment) {
     const button = document.createElement('button');
+    button.classList.add('keyboard--button');
 
     if (this.value) {
       if (this.keyCode.includes('Key')) {
@@ -78,14 +79,14 @@ export default class Key {
         break;
       case 'ShiftLeft':
       case 'ShiftRight':
-        ShiftLeft.classList.toggle('active');
-        ShiftRight.classList.toggle('active');
+        ShiftLeft.classList.toggle('button_active');
+        ShiftRight.classList.toggle('button_active');
 
-        if (AltLeft.classList.contains('active')) {
-          ShiftLeft.classList.remove('active');
-          ShiftRight.classList.remove('active');
-          AltLeft.classList.remove('active');
-          AltRight.classList.remove('active');
+        if (AltLeft.classList.contains('button_active')) {
+          ShiftLeft.classList.remove('button_active');
+          ShiftRight.classList.remove('button_active');
+          AltLeft.classList.remove('button_active');
+          AltRight.classList.remove('button_active');
           this.keyboardInst.changeLang();
         } else {
           this.keyboardInst.toggleCase();
@@ -97,14 +98,14 @@ export default class Key {
         break;
       case 'AltLeft':
       case 'AltRight':
-        AltLeft.classList.toggle('active');
-        AltRight.classList.toggle('active');
+        AltLeft.classList.toggle('button_active');
+        AltRight.classList.toggle('button_active');
 
-        if (ShiftLeft.classList.contains('active')) {
-          ShiftLeft.classList.remove('active');
-          ShiftRight.classList.remove('active');
-          AltLeft.classList.remove('active');
-          AltRight.classList.remove('active');
+        if (ShiftLeft.classList.contains('button_active')) {
+          ShiftLeft.classList.remove('button_active');
+          ShiftRight.classList.remove('button_active');
+          AltLeft.classList.remove('button_active');
+          AltRight.classList.remove('button_active');
           this.keyboardInst.changeLang();
         }
         break;

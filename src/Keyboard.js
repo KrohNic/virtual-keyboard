@@ -177,7 +177,7 @@ export default class Keyboard {
     const area = document.getElementById('area');
 
     if (button) {
-      button.classList.add('active');
+      button.classList.add('button_active');
     } else {
       return;
     }
@@ -213,7 +213,7 @@ export default class Keyboard {
   handleKeyUp(e) {
     const button = document.getElementById(e.code);
     if (button) {
-      button.classList.remove('active');
+      button.classList.remove('button_active');
     } else {
       return;
     }
