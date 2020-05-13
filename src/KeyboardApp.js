@@ -1,14 +1,14 @@
-import Keyboard from './Keyboard.js';
-import Key from './Key.js';
+import Keyboard from "./Keyboard.js";
+import Key from "./Key.js";
 
 export default class KeyboardApp {
   constructor() {
-    this.board = new Keyboard();
+    this.board = new Keyboard(this);
   }
 
   init(elemToAppend) {
-    if (window.localStorage.getItem('lang')) {
-      this.board.isEngLang = window.localStorage.getItem('lang') === 'true';
+    if (window.localStorage.getItem("lang")) {
+      this.board.isEngLang = window.localStorage.getItem("lang") === "true";
     }
 
     this.generateElements(elemToAppend);
@@ -16,19 +16,20 @@ export default class KeyboardApp {
   }
 
   generateElements(elemToAppend) {
-    const wrapper = document.createElement('div');
-    wrapper.id = 'wrapper';
+    const wrapper = document.createElement("div");
+    wrapper.id = "wrapper";
     elemToAppend.append(wrapper);
 
-    const area = document.createElement('textarea');
-    area.id = 'area';
-    area.placeholder = 'Shift + Alt - Change lang';
+    const area = document.createElement("textarea");
+    area.id = "area";
+    area.placeholder = "Shift + Alt - Change lang";
     area.readOnly = true;
     wrapper.append(area);
+    this.board.area = area;
 
-    const keyboard = document.createElement('div');
-    keyboard.classList.add('keyboard');
-    keyboard.id = 'keyboard';
+    const keyboard = document.createElement("div");
+    keyboard.classList.add("keyboard");
+    keyboard.id = "keyboard";
     wrapper.append(keyboard);
 
     for (let i = 0; i < this.board.symbols.length; i += 1) {
@@ -39,13 +40,13 @@ export default class KeyboardApp {
   }
 
   setHandlers() {
-    document.onkeydown = (e) => this.board.handleKeyDown(e);
-    document.onkeyup = (e) => this.board.handleKeyUp(e);
+    document.onkeydown = e => this.board.handleKeyDown(e);
+    document.onkeyup = e => this.board.handleKeyUp(e);
   }
 
   createKeysRow(row, keyboard) {
-    const div = document.createElement('div');
-    div.classList.add('key-row');
+    const div = document.createElement("div");
+    div.classList.add("key-row");
     keyboard.append(div);
 
     let fragment = new DocumentFragment();

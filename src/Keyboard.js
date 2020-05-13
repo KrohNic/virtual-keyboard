@@ -1,5 +1,5 @@
 export default class Keyboard {
-  constructor() {
+  constructor(keyboardAppInst) {
     this.symbols = [
       [
         ['`~ёЁ', 'Backquote'],
@@ -68,9 +68,13 @@ export default class Keyboard {
         ['', 'Space'],
         ['', 'AltRight'],
         ['', 'ControlRight'],
+        ['◄◄◄◄', 'ArrowLeft'],
+        ['►►►►', 'ArrowRight'],
       ],
     ];
 
+    this.keyboardAppInst = keyboardAppInst;
+    this.area = null;
     this.isEngLang = true;
     this.isUpperCase = true;
     this.isShiftPressed = false;
@@ -172,42 +176,65 @@ export default class Keyboard {
     }
   }
 
+  printText(text) {
+    this.area.setRangeText(
+      text,
+      this.area.selectionStart,
+      this.area.selectionEnd,
+      'end',
+    );
+  }
+
+  backspace() {
+    if (this.area.selectionStart === this.area.selectionEnd) {
+      if (this.area.selectionStart <= 0) return;
+
+      this.area.setRangeText(
+        '',
+        this.area.selectionStart - 1,
+        this.area.selectionStart,
+        'end',
+      );
+    } else {
+      this.printText('');
+    }
+  }
+
   handleKeyDown(e) {
     const button = document.getElementById(e.code);
-    const area = document.getElementById('area');
 
-    if (button) {
-      button.classList.add('button_active');
-    } else {
-      return;
-    }
+    if (!button) return true;
 
-    e.preventDefault();
+    button.classList.add('button_active');
 
     switch (e.code) {
       case 'ShiftLeft':
       case 'ShiftRight':
         this.toggleCase();
         this.shiftSymbols();
-        break;
+        return false;
       case 'Space':
-        area.value += ' ';
-        break;
+        this.printText(' ');
+        return false;
       case 'Tab':
-        area.value += '    ';
-        break;
+        this.printText('    ');
+        return false;
       case 'Enter':
-        area.value += '\n';
-        break;
+        this.printText('\n');
+        return false;
       case 'Backspace':
-        area.value = area.value.slice(0, -1);
-        break;
+        this.backspace();
+        return false;
+      case 'ArrowLeft':
+      case 'ArrowRight':
+        return true;
       default:
         if (!button.classList.contains('functional')) {
-          area.value += button.textContent;
+          this.printText(button.textContent);
         }
-        break;
     }
+
+    return false;
   }
 
   handleKeyUp(e) {
@@ -235,5 +262,7 @@ export default class Keyboard {
         }
         break;
     }
+
+    if (document.activeElement !== this.area) this.area.focus();
   }
 }

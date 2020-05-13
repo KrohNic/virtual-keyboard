@@ -4,13 +4,15 @@ body {
 
 #wrapper {
   margin: 0 auto;
-  width: 1000px;
+  max-width: 1000px;
+  width: 100%;
 }
 
 textarea {
-  margin: 10px auto;
-  width: 1000px;
+  width: 100%;
   height: 200px;
+  margin: 10px auto;
+  box-sizing: border-box;
   resize: none;
   font-size: 20px;
 }
@@ -18,9 +20,10 @@ textarea {
 .keyboard--button,
 .letter {
   width: 50px;
-  height: 60px;
+  height: 100%;
+  padding: 0;
   color: black;
-  font-size: 27px;
+  font-size: 3vw;
   background-color: rgb(223, 223, 223);
   border: #bbbbbb solid 1px;
   border-radius: 10px;
@@ -46,6 +49,8 @@ textarea {
 }
 
 .key-row {
+  width: 100%;
+  height: 18.5%;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
@@ -53,7 +58,7 @@ textarea {
 
 .keyboard {
   margin: 0 auto;
-  width: 1000px;
+  width: 100%;
   height: 320px;
   display: flex;
   flex-flow: column nowrap;
@@ -74,6 +79,7 @@ textarea {
 
 .space {
   width: 400px;
+  flex-basis: 30%;
 }
 
 .shiftleft,
@@ -93,4 +99,11 @@ textarea {
 
 .capslock {
   width: 153px;
+}
+
+@media (min-width: 900px) {
+  .keyboard--button,
+  .letter {
+    font-size: 27px;
+  }
 }
