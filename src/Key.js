@@ -16,20 +16,24 @@ export default class Key {
     ];
   }
 
+  setButtonType(button) {
+    if (this.keyCode.includes('Key')) {
+      button.classList.add('letter');
+    } else if (this.mixedKeys.includes(this.keyCode)) {
+      button.classList.add('mixed');
+    } else {
+      button.classList.add('symbol');
+    }
+
+    button.append(this.value);
+  }
+
   appendTo(fragment) {
     const button = document.createElement('button');
     button.classList.add('keyboard--button');
 
     if (this.value) {
-      if (this.keyCode.includes('Key')) {
-        button.classList.add('letter');
-      } else if (this.mixedKeys.includes(this.keyCode)) {
-        button.classList.add('mixed');
-      } else {
-        button.classList.add('symbol');
-      }
-
-      button.append(this.value);
+      this.setButtonType(button);
     } else {
       button.classList.add('functional');
       button.classList.add(this.keyCode.toLowerCase());
@@ -45,63 +49,65 @@ export default class Key {
   }
 
   moveCursorLeft(ShiftLeft) {
-    if (ShiftLeft.classList.contains('button_active')) {
-      if (
-        this.area.selectionStart !== this.area.selectionEnd
-        && this.area.selectionDirection === 'forward'
-      ) {
-        this.area.setSelectionRange(
-          this.area.selectionStart,
-          this.area.selectionEnd - 1,
-          'forward',
-        );
-      } else if (this.area.selectionStart > 0) {
-        this.area.setSelectionRange(
-          this.area.selectionStart - 1,
-          this.area.selectionEnd,
-          'backward',
-        );
-      }
-    } else if (this.area.selectionStart === 0) {
+    if (
+      !ShiftLeft.classList.contains('button_active')
+      && this.area.selectionStart === 0
+    ) {
       this.area.setSelectionRange(
         this.area.selectionStart,
         this.area.selectionStart,
       );
-    } else {
+    } else if (!ShiftLeft.classList.contains('button_active')) {
       this.area.setSelectionRange(
         this.area.selectionStart - 1,
         this.area.selectionStart - 1,
+      );
+    } else if (
+      this.area.selectionStart !== this.area.selectionEnd
+      && this.area.selectionDirection === 'forward'
+    ) {
+      this.area.setSelectionRange(
+        this.area.selectionStart,
+        this.area.selectionEnd - 1,
+        'forward',
+      );
+    } else if (this.area.selectionStart > 0) {
+      this.area.setSelectionRange(
+        this.area.selectionStart - 1,
+        this.area.selectionEnd,
+        'backward',
       );
     }
   }
 
   moveCursorRight(ShiftLeft) {
-    if (ShiftLeft.classList.contains('button_active')) {
-      if (
-        this.area.selectionStart === this.area.selectionEnd
-        || this.area.selectionDirection === 'forward'
-      ) {
-        this.area.setSelectionRange(
-          this.area.selectionStart,
-          this.area.selectionEnd + 1,
-          'forward',
-        );
-      } else {
-        this.area.setSelectionRange(
-          this.area.selectionStart + 1,
-          this.area.selectionEnd,
-          'backward',
-        );
-      }
-    } else if (this.area.value.length === this.area.selectionEnd) {
+    if (
+      !ShiftLeft.classList.contains('button_active')
+      && this.area.value.length === this.area.selectionEnd
+    ) {
       this.area.setSelectionRange(
         this.area.selectionEnd,
         this.area.selectionEnd,
       );
-    } else {
+    } else if (!ShiftLeft.classList.contains('button_active')) {
       this.area.setSelectionRange(
         this.area.selectionEnd + 1,
         this.area.selectionEnd + 1,
+      );
+    } else if (
+      this.area.selectionStart === this.area.selectionEnd
+      || this.area.selectionDirection === 'forward'
+    ) {
+      this.area.setSelectionRange(
+        this.area.selectionStart,
+        this.area.selectionEnd + 1,
+        'forward',
+      );
+    } else {
+      this.area.setSelectionRange(
+        this.area.selectionStart + 1,
+        this.area.selectionEnd,
+        'backward',
       );
     }
   }

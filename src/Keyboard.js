@@ -1,5 +1,6 @@
 export default class Keyboard {
   constructor(keyboardAppInst) {
+    // ['smallEngLetter bigEngLetter smallRusLetter bigRusLetter'], ['id']
     this.symbols = [
       [
         ['`~ёЁ', 'Backquote'],
@@ -95,7 +96,8 @@ export default class Keyboard {
 
   changeLang() {
     this.isEngLang = !this.isEngLang;
-    window.localStorage.setItem('lang', this.isEngLang);
+    const lang = this.isEngLang ? 'eng' : 'rus';
+    window.localStorage.setItem('lang', lang);
 
     this.buttonsRu.forEach((button) => {
       const btn = button;
@@ -143,17 +145,19 @@ export default class Keyboard {
       if (this.isShiftPressed) {
         return this.symbols[i][j][0][3];
       }
+
       return this.symbols[i][j][0][2];
     };
+
+    let getSymbol;
+
+    if (this.isEngLang) getSymbol = (i, j) => getEngSymbol(i, j);
+    else getSymbol = (i, j) => getRusSymbol(i, j);
 
     for (let i = 0; i < this.symbols.length; i += 1) {
       for (let j = 0; j < this.symbols[i].length; j += 1) {
         if (this.symbols[i][j].includes(id)) {
-          if (this.isEngLang) {
-            return getEngSymbol(i, j);
-          }
-
-          return getRusSymbol(i, j);
+          return getSymbol(i, j);
         }
       }
     }
@@ -186,17 +190,15 @@ export default class Keyboard {
   }
 
   backspace() {
-    if (this.area.selectionStart === this.area.selectionEnd) {
-      if (this.area.selectionStart <= 0) return;
-
+    if (this.area.selectionStart !== this.area.selectionEnd) {
+      this.printText('');
+    } else if (this.area.selectionStart > 0) {
       this.area.setRangeText(
         '',
         this.area.selectionStart - 1,
         this.area.selectionStart,
         'end',
       );
-    } else {
-      this.printText('');
     }
   }
 
@@ -239,12 +241,10 @@ export default class Keyboard {
 
   handleKeyUp(e) {
     const button = document.getElementById(e.code);
-    if (button) {
-      button.classList.remove('button_active');
-    } else {
-      return;
-    }
 
+    if (!button) return;
+
+    button.classList.remove('button_active');
     e.preventDefault();
 
     switch (e.code) {
